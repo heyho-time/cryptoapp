@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-// import { BLACK_COLOR } from "../colors";
+import { BLACK_COLOR } from "../colors";
 import Join from "../screens/Join";
 import Login from "../screens/Login";
 
@@ -12,7 +12,7 @@ const OutNav = () => (
       presentation: "modal",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "tomato",
+        backgroundColor: BLACK_COLOR,
       },
     }}
   >

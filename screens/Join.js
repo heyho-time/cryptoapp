@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components/native";
+import auth from "@react-native-firebase/auth";
+import { BLACK_COLOR } from "../colors";
+import { Alert } from "react-native";
 
 const Join = () => {
+  const passwordInput = useRef();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const onSubmitEditing = () => {
-    console.log("focus password");
+
+  const onSubmitEmailEditing = () => {
+    passwordInput.current.focus();
+  };
+  const onSubmitPasswordEditing = async () => {
+    if (email === "" || password === "") {
+      return Alert.alert("Fill in the form.");
+    }
+    try {
+      const userCredential =
+        await auth().createUserWithEmailAndPasswordAndPassword(email, password);
+      console.log(userCredential);
+    } catch (e) {}
   };
 
   return (
@@ -18,20 +33,53 @@ const Join = () => {
         value={email}
         returnKeyType="next"
         onChangeText={(text) => setEmail(text)}
-        onSubmitEditing={onSubmitEditing}
+        onSubmitEditing={onSubmitEmailEditing}
+        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
       />
       <TextInput
+        ref={passwordInput}
         placeholder="Password"
         secureTextEntry
         value={password}
         returnKeyType="done"
         onChangeText={(text) => setPassword(text)}
+        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+        onSubmitEditing={onSubmitPasswordEditing}
       />
+      <Btn onPress={onSubmitPasswordEditing}>
+        <BtnText>Create Account</BtnText>
+      </Btn>
     </Container>
   );
 };
-
 export default Join;
 
-const Container = styled.View``;
-const TextInput = styled.Text``;
+const Container = styled.View`
+  background-color: ${BLACK_COLOR};
+  flex: 1;
+  align-items: center;
+  color: white;
+  padding: 60px 20px;
+`;
+const TextInput = styled.TextInput`
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.5);
+`;
+const Btn = styled.TouchableOpacity`
+  width: 100%;
+  padding: 10px 20px;
+  border-width: 1px;
+  border-radius: 20px;
+  border-color: rgba(255, 255, 255, 0.5);
+  justify-content: center;
+  align-items: center;
+`;
+const BtnText = styled.Text`
+  color: white;
+  font-size: 16px;
+`;

@@ -6,6 +6,7 @@ import OutNav from "./navigators/OutNav";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     auth().onAuthStateChanged((user) => {
       if (user) {
